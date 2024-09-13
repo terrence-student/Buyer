@@ -14,6 +14,8 @@ import service.Impl.MemberServiceImpl;
 
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -30,7 +32,7 @@ public class LoginUI extends JFrame {
 	private JTextField username;
 	private MemberServiceImpl msi= new MemberServiceImpl();
 	private JPasswordField password;
-	public Member m2=null;
+	
 	
 	/**
 	 * Launch the application.
@@ -52,6 +54,7 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI() {
+		setTitle("登入畫面");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 555, 417);
 		contentPane = new JPanel();
@@ -89,12 +92,34 @@ public class LoginUI extends JFrame {
 		JButton btnNewButton = new JButton("登入");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String Username=username.getText();
-				String Password=new String(password.getPassword());
+				String Username=username.getText().trim();
+				String Password=new String(password.getPassword()).trim();
+				boolean checkchi;
+                int chi;
+				
+				if (Username.isEmpty() || Password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "帳號或密碼不能為空", "錯誤", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+ 
+             
+                for (int i = 0; i < Username.length(); i++) {
+                    chi = (int) Username.charAt(i);
+                    
+                    checkchi = (chi >= 48 && chi <= 57) || 
+                               (chi >= 65 && chi <= 90) || 
+                               (chi >= 97 && chi <= 122);  
+                    if (!checkchi) {
+                        JOptionPane.showMessageDialog(null, "請輸入字母或數字", "錯誤", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } 
+                }
+				
 				
 				
 				Member m=msi.login(Username, Password);
-				m2=m;
+				
 				if (m!=null) 
 				{
 					
@@ -103,8 +128,8 @@ public class LoginUI extends JFrame {
 					
 				}
 				else {
-					new LoginError().setVisible(true);
-					dispose();
+					 JOptionPane.showMessageDialog(null, "帳號或密碼輸入錯誤!", "錯誤", JOptionPane.ERROR_MESSAGE);
+                     return;
 				}
 				
 				
@@ -121,6 +146,9 @@ public class LoginUI extends JFrame {
 		JButton btnNewButton_1 = new JButton("註冊");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String Username=username.getText().trim();
+				String Password=new String(password.getPassword()).trim();
+				Member m=msi.login(Username, Password);
 				
 			new addMember().setVisible(true);
 				dispose();

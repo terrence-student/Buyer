@@ -64,7 +64,7 @@ public class invoiceAdd extends JFrame {
      */
     public invoiceAdd() {
         setTitle("發票管理系統");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 800, 754);
         
         // Setting a bright background color
@@ -131,6 +131,22 @@ public class invoiceAdd extends JFrame {
         panel.add(lblMoney);
         
         money = new JTextField();
+        money.addFocusListener(new FocusAdapter() {
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		
+        		try 
+        		{
+        			int Money=Integer.parseInt(money.getText());
+        		}
+        		catch(java.lang.NumberFormatException e1) 
+        		{
+        			JOptionPane.showMessageDialog(null, "請輸入正確的金額!", "警告", JOptionPane.WARNING_MESSAGE);
+                    return;
+        		}
+        		
+        	}
+        });
         money.setEditable(false);
         money.setBounds(246, 339, 200, 36);
         money.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
@@ -152,7 +168,7 @@ public class invoiceAdd extends JFrame {
         
    /*============================================================================*/  
         JButton Exit = new JButton("離開");
-        Exit.setBounds(50, 447, 120, 50);
+        Exit.setBounds(50, 490, 120, 50);
         JButton serchByInvoice = new JButton("查詢");
         serchByInvoice.setBounds(464, 89, 130, 36);
         JButton RenewInvoice = new JButton("更新發票");
@@ -171,7 +187,7 @@ public class invoiceAdd extends JFrame {
         		else 
         		{
         			isi.DeleteByInvoice(Invoice);
-        			JOptionPane.showMessageDialog(null,"該發票已刪除!","通知",JOptionPane.WARNING_MESSAGE);
+        			JOptionPane.showMessageDialog(null,"該發票已刪除!","通知",JOptionPane.PLAIN_MESSAGE);
         			
                 	
                 	companyNumber.setText(""); 			
@@ -192,7 +208,7 @@ public class invoiceAdd extends JFrame {
         
                                                                                      /* ============新增發票區============= */
         JButton addInvoice = new JButton("新增發票");
-        addInvoice.setBounds(350, 447, 120, 50);
+        addInvoice.setBounds(350, 490, 120, 50);
         addInvoice.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
@@ -341,7 +357,7 @@ public class invoiceAdd extends JFrame {
         
      // Confirmation button
         
-        RenewInvoice.setBounds(200, 447, 120, 50);
+        RenewInvoice.setBounds(200, 490, 120, 50);
         RenewInvoice.setFont(new Font("微軟正黑體", Font.BOLD, 20));
         RenewInvoice.setBackground(new Color(100, 149, 237));  // Light blue
         RenewInvoice.setForeground(new Color(17, 17, 17));
@@ -435,7 +451,7 @@ public class invoiceAdd extends JFrame {
                                 "資料沒有發現更動\n請問是否要繼續更新呢?",
                                 "通知",
                                 JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE,
+                                JOptionPane.QUESTION_MESSAGE,
                                 null,
                                 options,
                                 options[0]
@@ -507,9 +523,9 @@ public class invoiceAdd extends JFrame {
                    result=JOptionPane.showOptionDialog(
                            null,
                            "是否確定要取消新增呢?\n",
-                           "警告",
+                           "通知",
                            JOptionPane.YES_NO_OPTION,
-                           JOptionPane.WARNING_MESSAGE,
+                           JOptionPane.QUESTION_MESSAGE,
                            null,  // 使用默认图标
                            options,  // 自定义按钮文本
                            options[0]  // 默认选中的按钮
@@ -545,7 +561,7 @@ public class invoiceAdd extends JFrame {
                             "資料沒有發現更動\n請問是否要繼續更新呢?",
                             "通知",
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE,
+                            JOptionPane.QUESTION_MESSAGE,
                             null,  // 使用默认图标
                             options,  // 自定义按钮文本
                             options[0]  // 默认选中的按钮
@@ -575,7 +591,7 @@ public class invoiceAdd extends JFrame {
                     	
             	 }}
         		else{
-        			new ChoseUI().setVisible(true);
+        			
         			dispose();
         			}
         		
@@ -593,9 +609,20 @@ public class invoiceAdd extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		 if(RenewInvoice.getText().equals("確認")||addInvoice.getText().equals("新增")) {
-                 Integer Money = Integer.parseInt(money.getText().trim());
-                 Integer MoneyInTxt=(int)Math.round((Money*1.05));
-                 moneyInTxt.setText(MoneyInTxt.toString());
+                 
+                 try 
+         		{
+                	 Integer Money = Integer.parseInt(money.getText().trim());
+                	 Integer MoneyInTxt=(int)Math.round((Money*1.05));
+                     moneyInTxt.setText(MoneyInTxt.toString());
+         		}
+         		catch(java.lang.NumberFormatException e1) 
+         		{
+         			JOptionPane.showMessageDialog(null, "請輸入正確的金額!", "警告", JOptionPane.WARNING_MESSAGE);
+                     return;
+         		}
+                 
+                
         		 }
         		
         	}
@@ -612,16 +639,6 @@ public class invoiceAdd extends JFrame {
         panel.add(lblNewLabel_22);
         
         companyNumber = new JTextField();
-        companyNumber.addFocusListener(new FocusAdapter() {
-        	@Override
-        	public void focusLost(FocusEvent e) {
-        		
-        		
-        		
-        		
-        		
-        	}
-        });
         companyNumber.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
         companyNumber.setEditable(false);
         companyNumber.setBounds(246, 139, 200, 36);
@@ -680,7 +697,7 @@ public class invoiceAdd extends JFrame {
         delete.setForeground(new Color(17, 17, 17));
         delete.setFont(new Font("微軟正黑體", Font.BOLD, 20));
         delete.setBackground(new Color(100, 149, 237));
-        delete.setBounds(500, 447, 120, 50);
+        delete.setBounds(500, 490, 120, 50);
         panel.add(delete);
         
         JLabel lblNewLabel = new JLabel("");

@@ -87,6 +87,19 @@ public class SellerServiceImpl implements SellerService{
 		
 	}
 
+	@Override
+	public boolean checkByShortname(String shortname) {
+		List<Seller> l=sdi.findByShortname(shortname);
+		boolean x=false;
+		if (l.size()!=0) 
+		{
+			x=true;
+			
+		}
+		
+		return x;
+	}
+
 	
 	
 	

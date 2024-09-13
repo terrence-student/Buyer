@@ -36,6 +36,8 @@ import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -77,7 +79,7 @@ public class Manage extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) {	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -96,7 +98,8 @@ public class Manage extends JFrame {
 	
 	public Manage() {}
 	public Manage(Member m) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("帳款管理系統");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1145, 829);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -540,7 +543,7 @@ public class Manage extends JFrame {
 			public void actionPerformed(ActionEvent e) {   //刪除帳款
 				String Invoice=invoice.getText();
 				asi.DeleteByInvoice(Invoice);
-				JOptionPane.showMessageDialog(null,"該帳款已刪除!","通知",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null,"該帳款已刪除!","通知",JOptionPane.INFORMATION_MESSAGE);
 					invoice.setText("");
 					pRBuyer.setText("");
 					department.setText("");
@@ -576,6 +579,7 @@ public class Manage extends JFrame {
 					price.setText(""); 
 					tableModel.setRowCount(0);
 					delete.setEnabled(false);
+					renewAccount.setEnabled(false);
 			}
 		});
 		renewAccount.setEnabled(false);
@@ -657,7 +661,7 @@ public class Manage extends JFrame {
 		
 		renewAccount.addActionListener(new ActionListener() {                //更新帳款
 			public void actionPerformed(ActionEvent e) {
-				Exit.setText("新增結束");
+				Exit.setText("更新結束");
 				
 				boolean checkout=false;
 				boolean isConfirming = "確認".equals(renewAccount.getText());
@@ -841,7 +845,7 @@ public class Manage extends JFrame {
 	                                "資料沒有發現更動\n請問是否要繼續更新呢?",
 	                                "通知",
 	                                JOptionPane.YES_NO_OPTION,
-	                                JOptionPane.WARNING_MESSAGE,
+	                                JOptionPane.QUESTION_MESSAGE,
 	                                null,
 	                                options,
 	                                options[0]
@@ -1194,9 +1198,7 @@ public class Manage extends JFrame {
 						break;
 					case "TT":
 						payType.setText("A006");
-						PayType=payType.getText();
-						payDate.setText("");
-						payExpireDate.setText("");
+						PayType=payType.getText();						
 						payDate.setEditable(true);
 						payExpireDate.setEditable(true);
 						
@@ -1209,7 +1211,8 @@ public class Manage extends JFrame {
 				String PaymentType=paymentType.getSelectedItem().toString();
 				payExpireDate.setText(PayDate);
 				String PayState=payState.getText();
-				
+				Pattern pattern = Pattern.compile("中華民國\\s*(\\d+)\\s*年\\s*(\\d+)\\s*月\\s*(\\d+)\\s*日");
+		        Matcher matcher = pattern.matcher(PayDate);
 				
 				
 				
@@ -1375,8 +1378,7 @@ public class Manage extends JFrame {
 									case "TT":
 										payType.setText("A006");
 										
-										payDate.setText("");
-										payExpireDate.setText("");
+										
 										payDate.setEditable(true);
 										payExpireDate.setEditable(true);
 										
@@ -1462,8 +1464,7 @@ public class Manage extends JFrame {
 									case "TT":
 										
 										
-										payDate.setText("");
-										payExpireDate.setText("");
+										
 										payDate.setEditable(true);
 										payExpireDate.setEditable(true);
 										
@@ -1535,8 +1536,7 @@ public class Manage extends JFrame {
 									case "TT":
 										
 										
-										payDate.setText("");
-										payExpireDate.setText("");
+										
 										payDate.setEditable(true);
 										payExpireDate.setEditable(true);
 										
@@ -1612,9 +1612,9 @@ public class Manage extends JFrame {
                    result=JOptionPane.showOptionDialog(
                            null,
                            "是否確定要取消建立呢?\n",
-                           "警告",
+                           "通知",
                            JOptionPane.YES_NO_OPTION,
-                           JOptionPane.WARNING_MESSAGE,
+                           JOptionPane.QUESTION_MESSAGE,
                            null,  // 使用默认图标
                            options,  // 自定义按钮文本
                            options[0]  // 默认选中的按钮
@@ -1634,6 +1634,8 @@ public class Manage extends JFrame {
 					//panel3
 					payWay.setEnabled(false);
 					paymentType.setEnabled(false);
+					payDate.setEditable(false);
+					payExpireDate.setEditable(false);
 					
 					//panel5
 					item.setEditable(false);   
@@ -1700,7 +1702,7 @@ public class Manage extends JFrame {
                                "資料沒有發現更動\n請問是否要繼續更新呢?",
                                "通知",
                                JOptionPane.YES_NO_OPTION,
-                               JOptionPane.WARNING_MESSAGE,
+                               JOptionPane.QUESTION_MESSAGE,
                                null,
                                options,
                                options[0]

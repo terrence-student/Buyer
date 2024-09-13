@@ -22,7 +22,10 @@ public class ChoseUI extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private static DateCalculator dc = new DateCalculator();
-
+    private sellerAdd sa;
+    private invoiceAdd ia;
+    private Manage  ma;
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -39,6 +42,9 @@ public class ChoseUI extends JFrame {
     public ChoseUI() {}
 
     public ChoseUI(Member m) {
+    	
+    	
+    	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 500, 450);  // 擴大框架尺寸
         contentPane = new JPanel();
@@ -57,20 +63,19 @@ public class ChoseUI extends JFrame {
         // 系統選擇下拉選單
         JComboBox<String> system = new JComboBox<>();
         system.setFont(new Font("新細明體", Font.BOLD, 20));  // 字體設為普通大小
-        system.setModel(new DefaultComboBoxModel<>(new String[]{
-                "apmi600  廠商資料維護系統",
-                "aapt110   發票維護系統",
-                "apmt110 帳款維護系統"}));
+        system.setModel(new DefaultComboBoxModel(new String[] {"apmi600  廠商基本資料", "aapt110   發票管理系統", "apmt110 帳款管理系統"}));
         system.setBounds(120, 167, 300, 40);  // 調整選單位置與大小
         panel.add(system);
-
+        
+        
+        
         // 歡迎標籤
         JLabel welcome = new JLabel("歡迎您!", SwingConstants.CENTER);  // 設定標籤內容置中
         welcome.setFont(new Font("新細明體", Font.BOLD, 26));  // 字體大小設為24
         welcome.setBounds(91, 79, 312, 40);  // 調整標籤位置與大小
         panel.add(welcome);
         welcome.setText(m.getName() + ",歡迎您!");  // 假設使用者名稱是從 Member 物件取得
-
+        
         // 確定按鈕
         JButton btnConfirm = new JButton("確定");
         btnConfirm.setFont(new Font("新細明體", Font.BOLD, 20));
@@ -80,17 +85,33 @@ public class ChoseUI extends JFrame {
         btnConfirm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedSystem = (String) system.getSelectedItem();
+                
+                
                 switch (selectedSystem) {
-                    case "apmi600  廠商資料維護系統":
-                        new sellerAdd().setVisible(true);
-                        break;
-                    case "aapt110   發票維護系統":
-                        new invoiceAdd().setVisible(true);
-                        break;
-                    case "apmt110 帳款維護系統":
-                        new Manage(m).setVisible(true);
-                        break;
-                }
+                case "apmi600  廠商基本資料":
+                    // 如果 sa 是 null 或已經被 dispose，重新創建
+                    if (sa == null || !sa.isDisplayable()) {
+                        sa = new sellerAdd(); // 創建新的 sellerAdd 視窗
+                    }
+                    sa.setVisible(true); // 顯示視窗
+                    break;
+
+                case "aapt110   發票管理系統":
+                    // 如果 ia 是 null 或已經被 dispose，重新創建
+                    if (ia == null || !ia.isDisplayable()) {
+                        ia = new invoiceAdd(); // 創建新的 invoiceAdd 視窗
+                    }
+                    ia.setVisible(true); // 顯示視窗
+                    break;
+
+                case "apmt110 帳款管理系統":
+                    // 如果 ma 是 null 或已經被 dispose，重新創建
+                    if (ma == null || !ma.isDisplayable()) {
+                        ma = new Manage(m); // 創建新的 Manage 視窗
+                    }
+                    ma.setVisible(true); // 顯示視窗
+                    break;
+            }
             }
         });
         panel.add(btnConfirm);
@@ -104,6 +125,17 @@ public class ChoseUI extends JFrame {
         btnExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                
+                if (sa != null) {
+                    sa.dispose();
+                }
+                if (ia != null) {
+                    ia.dispose();
+                }
+                if (ma != null) {
+                    ma.dispose();
+                }
+                
             }
         });
         panel.add(btnExit);

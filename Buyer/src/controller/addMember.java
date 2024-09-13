@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import service.Impl.MemberServiceImpl;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -43,6 +45,7 @@ public class addMember extends JFrame {
     /**
      * Create the frame.
      */
+    
     public addMember() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 500, 500);
@@ -113,25 +116,79 @@ public class addMember extends JFrame {
         btnNewButton.setFont(new Font("微軟正黑體", Font.BOLD, 22));  // 加大按鈕字體
         btnNewButton.setForeground(Color.WHITE);
         btnNewButton.setBackground(new Color(153, 204, 255));  // 柔和淺藍色按鈕
-        btnNewButton.setBounds(170, 320, 140, 50);  // 調整按鈕大小與位置
+        btnNewButton.setBounds(88, 320, 140, 50);  // 調整按鈕大小與位置
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String Name = name.getText();
                 String Username = username.getText();
                 String Password = password.getText();
-
-                if (msi.findByUserName(Username)) {
-                    new addMemberError().setVisible(true);
-                    dispose();
+                boolean checkchi;
+                int chi;
+                
+                if (Name.isEmpty() ||Username.isEmpty() || Password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "請填寫所有欄位", "錯誤", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+                
+ 
+             
+                for (int i = 0; i < Username.length(); i++) {
+                    chi = (int) Username.charAt(i);
+                    
+                    checkchi = (chi >= 48 && chi <= 57) || 
+                               (chi >= 65 && chi <= 90) || 
+                               (chi >= 97 && chi <= 122);  
+                    if (!checkchi) {
+                        JOptionPane.showMessageDialog(null, "請輸入字母或數字", "錯誤", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } 
+                }
+                
+                
+                
+                
+                if (msi.findByUserName(Username)) {
+                	JOptionPane.showMessageDialog(null, "該帳號已註冊過，請重新再輸入一次!", "錯誤", JOptionPane.ERROR_MESSAGE);
+                    return;
+	
+                }
+                else 
+                {
+                	Member m = new Member(Name, Username, Password);
+                    msi.AddMember(m);
+                	
+                	JOptionPane.showMessageDialog(null, "註冊成功，請重新登入!", "通知", JOptionPane.PLAIN_MESSAGE);
+                	new LoginUI().setVisible(true);
+                	dispose();
+                	return;
+                }
+                
 
-                Member m = new Member(Name, Username, Password);
-                msi.AddMember(m);
-
-                new addMemberSuccess().setVisible(true);
-                dispose();
+                
+                
             }
         });
         panel.add(btnNewButton);
+        
+        JLabel lblNewLabel_2_1 = new JLabel("帳號及密碼:請輸入a-z、A-Z、0-9");
+        lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel_2_1.setForeground(new Color(231, 76, 60));
+        lblNewLabel_2_1.setFont(new Font("新細明體", Font.BOLD, 13));
+        lblNewLabel_2_1.setBounds(127, 286, 233, 28);
+        panel.add(lblNewLabel_2_1);
+        
+        JButton btnNewButton_1 = new JButton("返回登入");
+        btnNewButton_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new LoginUI().setVisible(true);
+            	dispose();
+        		
+        	}
+        });
+        btnNewButton_1.setForeground(Color.WHITE);
+        btnNewButton_1.setFont(new Font("微軟正黑體", Font.BOLD, 22));
+        btnNewButton_1.setBackground(new Color(153, 204, 255));
+        btnNewButton_1.setBounds(270, 320, 140, 50);
+        panel.add(btnNewButton_1);
     }
 }

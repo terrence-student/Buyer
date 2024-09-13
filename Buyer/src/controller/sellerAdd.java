@@ -19,7 +19,7 @@ public class sellerAdd extends JFrame {
     public sellerAdd() {
         setTitle("廠商基本資料");
         setSize(524, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);  // 设置为绝对布局
         
@@ -210,9 +210,16 @@ public class sellerAdd extends JFrame {
 
                     // Check if the seller already exists
                     if (ssi.checkSellerNumber(CompanyNumber)) {
+                        JOptionPane.showMessageDialog(null, "已存在統一編號，請重新輸入!", "警告", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    } 
+                    
+                    else if (ssi.checkByShortname(CompanyShortName)) {
                         JOptionPane.showMessageDialog(null, "已存在廠商，請重新輸入!", "警告", JOptionPane.WARNING_MESSAGE);
                         return;
-                    } else {
+                    }
+                    
+                    else {
                         JOptionPane.showMessageDialog(null, "新增成功!", "通知", JOptionPane.INFORMATION_MESSAGE);
                         ssi.newSellerAdd(s);
                        
@@ -425,7 +432,7 @@ public class sellerAdd extends JFrame {
                         "資料沒有發現更動\n請問是否要繼續更新呢?",
                         "通知",
                         JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
+                        JOptionPane.QUESTION_MESSAGE,
                         null,  // 使用默认图标
                         options,  // 自定义按钮文本
                         options[0]  // 默认选中的按钮
@@ -483,9 +490,9 @@ public class sellerAdd extends JFrame {
                    result=JOptionPane.showOptionDialog(
                            null,
                            "是否確定要取消更新呢?\n",
-                           "警告",
+                           "通知",
                            JOptionPane.YES_NO_OPTION,
-                           JOptionPane.WARNING_MESSAGE,
+                           JOptionPane.QUESTION_MESSAGE,
                            null,  // 使用默认图标
                            options,  // 自定义按钮文本
                            options[0]  // 默认选中的按钮
@@ -519,9 +526,9 @@ public class sellerAdd extends JFrame {
                     result=JOptionPane.showOptionDialog(
                             null,
                             "是否確定要取消新增呢?\n",
-                            "警告",
+                            "通知",
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE,
+                            JOptionPane.QUESTION_MESSAGE,
                             null,  // 使用默认图标
                             options,  // 自定义按钮文本
                             options[0]  // 默认选中的按钮
@@ -559,7 +566,7 @@ public class sellerAdd extends JFrame {
                        }}
         		
         		else{
-        			new ChoseUI().setVisible(true);
+        			
         			dispose();
         			}
         		

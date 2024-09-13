@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class DateCalculator {
 
@@ -59,6 +60,8 @@ public class DateCalculator {
                     billingDate = currentDate.plusMonths(1).withDayOfMonth(25); // 次月25日結帳
                     days = 90;
                     break;
+               
+                
                 default:
                     return "不支持的付款類型";
             }
@@ -83,11 +86,11 @@ public class DateCalculator {
     
     public static void updateLabelWithTime(JLabel label) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Taipei"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm:ss a");
+        // 使用24小時制的 "HH" 來顯示時間
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss a");
         String formattedTime = now.format(formatter);
 
-        
-
+        // 分割時間和上午/下午部分
         String[] parts = formattedTime.split(" ");
         
         if (parts.length < 2) {
@@ -95,9 +98,12 @@ public class DateCalculator {
             return;
         }
 
-        String period = parts[1].equalsIgnoreCase("上午") ? "上午" : "下午";
+        // 判斷是上午還是下午
+        String period = parts[1].equalsIgnoreCase("AM") ? "上午" : "下午";
+        // 將時間部分拼接為 "上午" 或 "下午" + 時間
         String time = period + " " + parts[0];
         
+        // 更新 JLabel 的顯示內容
         label.setText(time);
     }
     
@@ -106,8 +112,8 @@ public class DateCalculator {
     
     public static void main(String[] args) {
         // 測試範例：民國 113 年 9 月 20 日，付款類型為 A004
-        String rocDate = "中華民國 113 年 9 月 20 日";
-        System.out.println(calculatePaymentDate(rocDate, "A004"));
+        String rocDate = "aa";
+        System.out.println(calculatePaymentDate(rocDate, "A006"));
         
      // 示範如何更新 JLabel
         JLabel testLabel = new JLabel(); // 假設這個 JLabel 已經加到 GUI 上

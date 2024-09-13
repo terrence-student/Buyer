@@ -14,6 +14,7 @@ public interface SellerService {
 	List<Seller> selectAll();
 	List<Seller> selectAllByNumber(String number);
 	List<Seller> selectAllByShortname(String shortname);
+	boolean checkByShortname(String shortname);
 	//update
 	void UpdateSeller(Seller s);
 	//delete
