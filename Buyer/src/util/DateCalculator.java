@@ -111,11 +111,11 @@ public class DateCalculator {
     
     
     public static void main(String[] args) {
-        // 測試範例：民國 113 年 9 月 20 日，付款類型為 A004
+        
         String rocDate = "aa";
         System.out.println(calculatePaymentDate(rocDate, "A006"));
         
-     // 示範如何更新 JLabel
+     
         JLabel testLabel = new JLabel(); // 假設這個 JLabel 已經加到 GUI 上
         updateLabelWithTime(testLabel);
         System.out.println(testLabel.getText()); // 印出當前時間
